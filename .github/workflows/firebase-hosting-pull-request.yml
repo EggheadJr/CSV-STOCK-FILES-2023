@@ -1,0 +1,17 @@
+name: Firebase Hosting PR Preview
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: firebase/firebase-tools-action@v1
+        with:
+          firebase_version: '9.x.x'
+      - run: npm install && npm run build
+      - run: firebase hosting:channel:deploy ${{ github.event.number }} --preview
